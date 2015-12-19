@@ -1,0 +1,7 @@
+{
+  "generator-react-webpack": {
+    "appName": "gameOfLife",
+    "style": "stylus",
+    "postcss": true
+  }
+}
