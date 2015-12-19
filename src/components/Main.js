@@ -25,6 +25,26 @@ class AppComponent extends React.Component {
       }
     }
 
+    let getNeiboursOf = (ri, ci) => {
+      let cells = this.state.cells
+      let topNeibours = _.slice(cells[ri - 1], ci - 1, ci + 1)
+      let btmNeibours = _.slice(cells[ri + 1], ci - 1, ci + 1)
+      let crtNeibours = [cells[ri][ci - 1], cells[ri][ci + 1]]
+
+      return _([]).push(topNeibours, crtNeibours, btmNeibours)
+                  .flatten()
+                  .compact()
+                  .value()
+    }
+
+
+    this.setTableSize = (type, evt) => {
+      let val = _.parseInt(evt.currentTarget.value)
+      this.setState({
+        size: update(this.state.size, {[type]: {$set: val}})
+      });
+    }
+
     this.makeStartGen = (rows, cells) => {
       this.setState({
         cells: _.map(new Array(rows),
@@ -33,18 +53,10 @@ class AppComponent extends React.Component {
       });
     }
 
-    this.setTableSize = (type, evt) => {
-      let val = _.parseInt(evt.currentTarget.value)
-      this.setState({
-        size: update(this.state.size, {[type]: {$set: val}})
-      });
-      console.log(this.state.size.width, this.state.size.height)
-    }
-
     this.makeNextGen = () => {
-      let nextGen = this._mapCells(this.state.cells,
+      let nextGen = AppComponent._mapCells(this.state.cells,
         (ri, ci, cell) => {
-          let aliveNeibours = this._getNeiboursOf(ri, ci).length
+          let aliveNeibours = getNeiboursOf(ri, ci).length
           switch(cell){
             case 1:
               return aliveNeibours === 3 || aliveNeibours === 2 ? 1 : 0
@@ -53,8 +65,10 @@ class AppComponent extends React.Component {
           }
         }
       )
+      this.setState({
+        cells: nextGen
+      });
     }
-
 
   }
 
@@ -64,17 +78,6 @@ class AppComponent extends React.Component {
         return fn(rowIndex, cellIndex, cell)
       })
     })
-  }
-
-  static _getNeiboursOf(ri, ci) {
-    let topNeibours = _.slice(this.fields[ri - 1], ci - 1, ci + 1)
-    let btmNeibours = _.slice(this.fields[ri + 1], ci - 1, ci + 1)
-    let crtNeibours = [this.fields[ri][ci - 1], this.fields[ri][ci + 1]]
-
-    return _([]).push(topNeibours, crtNeibours, btmNeibours)
-                .flatten()
-                .compact()
-                .value()
   }
 
 
@@ -94,10 +97,9 @@ class AppComponent extends React.Component {
           handleCreate={_.partial(this.makeStartGen, height, width)}
           handleChange={this.setTableSize}/>
         <LifeTable cells={this.state.cells} />
-        {/*<Controls
-          handlePrev={}
-          handleNext={}
-          handlePause={}/>
+        <Controls
+          handleNext={this.makeNextGen}/>
+        {/*
         <Options
           handleSetSpeed={}
           handleCustomGen={} />*/}

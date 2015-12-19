@@ -1,15 +1,30 @@
 'use strict';
 
 import React from 'react';
+import {Row, Col, Button, ButtonGroup, Glyphicon} from 'react-bootstrap'
+import _ from 'lodash'
 
 require('styles//TableControls.styl');
 
 class TableControlsComponent extends React.Component {
   render() {
     return (
-      <div className="tablecontrols-component">
-        Please edit src/components///TableControlsComponent.js to update this component!
-      </div>
+      <Row className="tablecontrols-component">
+        <ButtonGroup>
+          {/*<Button
+            onClick={this.props.handle}><Glyphicon glyph="" /></Button>
+          {this.props.pause ?
+            <Button
+              onClick={this.props.handle}><Glyphicon glyph="play" /></Button>
+            :
+            <Button
+              onClick={this.props.handle}><Glyphicon glyph="pause" /></Button>
+          }*/}
+          
+          <Button
+            onClick={this.props.handleNext}><Glyphicon glyph="step-forward" /></Button>
+        </ButtonGroup>
+      </Row>
     );
   }
 }
