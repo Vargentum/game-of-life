@@ -13,26 +13,28 @@ class TableControlsComponent extends React.Component {
 
     return (
       <Row className="tablecontrols-component">
-        <ButtonGroup>
-          {/*<Button
-            disabled={isPlaying}
-            onClick={this.props.handle}><Glyphicon glyph="" /></Button>
-          */}
-          {isPlaying ?
+        <Col xs={12}>
+          <ButtonGroup block={true}
+                       bsSize="large">
             <Button
-              onClick={_.partial(this.props.handlePlay, false)}>
-                <Glyphicon glyph="pause" />
-            </Button>
-            :
+              disabled={isPlaying}
+              onClick={this.props.handleRepeat}><Glyphicon glyph="repeat" /></Button>
+            {isPlaying ?
+              <Button
+                onClick={_.partial(this.props.handlePlay, false)}>
+                  <Glyphicon glyph="pause" />
+              </Button>
+              :
+              <Button
+                onClick={_.partial(this.props.handlePlay, true)}>
+                  <Glyphicon glyph="play" />
+              </Button>
+            }
             <Button
-              onClick={_.partial(this.props.handlePlay, true)}>
-                <Glyphicon glyph="play" />
-            </Button>
-          }
-          <Button
-            disabled={isPlaying}
-            onClick={this.props.handleNext}><Glyphicon glyph="step-forward" /></Button>
-        </ButtonGroup>
+              disabled={isPlaying}
+              onClick={this.props.handleNext}><Glyphicon glyph="step-forward" /></Button>
+          </ButtonGroup>
+        </Col>
       </Row>
     );
   }

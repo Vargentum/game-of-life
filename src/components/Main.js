@@ -154,11 +154,13 @@ class AppComponent extends React.Component {
           size={this.state.size}
           handleCreate={_.partial(this.makeStartGen, height, width)}
           handleChange={this.setTableSize}/>
-        <LifeTable cells={this.state.cells} />
         <Controls
           isPlaying={this.state.isPlaying}
+          handleRepeat={_.partial(this.makeStartGen, height, width)}
           handlePlay={this.togglePlayMode}
           handleNext={this.makeNextGen}/>
+        
+        <LifeTable cells={this.state.cells} />
         {/*
         <Options
           handleSetSpeed={}
