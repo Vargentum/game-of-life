@@ -32,7 +32,13 @@ class Archiver {
 }
 
 
+const DEF_MAP_SIZE = 50
 
+const GENERATION_SPEEDS = {
+  fast: 100,
+  middle: 250,
+  slow: 500
+}
 
 
 class AppComponent extends React.Component {
@@ -43,11 +49,11 @@ class AppComponent extends React.Component {
     this.state = {
       cells: [],
       size: {
-        width:  10,
-        height: 10
+        width:  DEF_MAP_SIZE,
+        height: DEF_MAP_SIZE
       },
       isPlaying: false,
-      playSpeed: 200,
+      playSpeed: GENERATION_SPEEDS.fast,
       ifFinished: false,
     }
 
