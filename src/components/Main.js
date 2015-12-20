@@ -33,7 +33,7 @@ class Archiver {
 
 
 const MAP_SIZES = {
-  min: 2,
+  min: 10,
   max: 50,
   default: 50
 }
