@@ -12,6 +12,29 @@ import {Row, Coll, Grid} from "react-bootstrap";
 
 import _ from 'lodash'
 
+
+class Archiver {
+  constructor(props) {
+    this.archive = []
+  }
+
+  add(arr) {
+    this.archive.push(arr)
+  }
+
+  get(i) {
+    return this.archive[i] || []
+  }
+
+  isEqualToLastArchive(arr) {
+    return _.isEqual(arr, _.last(this.archive))
+  }
+}
+
+
+
+
+
 class AppComponent extends React.Component {
 
   constructor(props) {
@@ -24,8 +47,12 @@ class AppComponent extends React.Component {
         height: 10
       },
       isPlaying: false,
-      playSpeed: 500
+      playSpeed: 200,
+      ifFinished: false,
     }
+
+
+    let appArchiver = new Archiver()
 
     let getNeiboursOf = (ri, ci) => {
       let cells = this.state.cells
@@ -55,10 +82,14 @@ class AppComponent extends React.Component {
     }
 
     this.makeStartGen = (rows, cells) => {
-      this.setState({
-        cells: _.map(new Array(rows),
+      let startGen = _.map(new Array(rows),
                          () => _.map(new Array(cells),
                           () => _.random(0, 1)))
+      
+      appArchiver.add(startGen)
+      this.setState({
+        cells: startGen,
+        isFinished: false
       });
     }
 
@@ -74,9 +105,19 @@ class AppComponent extends React.Component {
           }
         }
       )
+      
+      if (appArchiver.isEqualToLastArchive(nextGen)) {
+        this.setState({
+          isPlaying: false,
+          isFinished: true
+        });
+        return
+      }
+      appArchiver.add(nextGen)
+
       this.setState({
         cells: nextGen
-      }, callback());
+      }, _.isFunction(callback) ? callback() : null)
     }
 
     this.togglePlayMode = (mode) => {
@@ -122,6 +163,11 @@ class AppComponent extends React.Component {
         <Options
           handleSetSpeed={}
           handleCustomGen={} />*/}
+        {this.state.isFinished ? 
+          <h1>The game is over!</h1>
+          :
+          null
+        }
       </Grid>
     );
   }
