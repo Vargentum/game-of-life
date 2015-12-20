@@ -22,7 +22,9 @@ class AppComponent extends React.Component {
       size: {
         width:  10,
         height: 10
-      }
+      },
+      isPlaying: false,
+      playSpeed: 500
     }
 
     let getNeiboursOf = (ri, ci) => {
@@ -35,6 +37,13 @@ class AppComponent extends React.Component {
                   .flatten()
                   .compact()
                   .value()
+    }
+
+    let play = () => {
+      let playTimer = setTimeout(() => {
+        this.makeNextGen(play)
+      }, this.state.playSpeed)
+      if (!this.state.isPlaying) window.clearTimeout(playTimer)
     }
 
 
@@ -53,7 +62,7 @@ class AppComponent extends React.Component {
       });
     }
 
-    this.makeNextGen = () => {
+    this.makeNextGen = (callback) => {
       let nextGen = AppComponent._mapCells(this.state.cells,
         (ri, ci, cell) => {
           let aliveNeibours = getNeiboursOf(ri, ci).length
@@ -67,6 +76,14 @@ class AppComponent extends React.Component {
       )
       this.setState({
         cells: nextGen
+      }, callback());
+    }
+
+    this.togglePlayMode = (mode) => {
+      this.setState({
+        isPlaying: mode
+      }, () => {
+        play()
       });
     }
 
@@ -98,6 +115,8 @@ class AppComponent extends React.Component {
           handleChange={this.setTableSize}/>
         <LifeTable cells={this.state.cells} />
         <Controls
+          isPlaying={this.state.isPlaying}
+          handlePlay={this.togglePlayMode}
           handleNext={this.makeNextGen}/>
         {/*
         <Options
