@@ -32,7 +32,11 @@ class Archiver {
 }
 
 
-const DEF_MAP_SIZE = 50
+const MAP_SIZES = {
+  min: 2,
+  max: 50,
+  default: 50
+}
 
 const GENERATION_SPEEDS = {
   fast: 100,
@@ -49,8 +53,8 @@ class AppComponent extends React.Component {
     this.state = {
       cells: [],
       size: {
-        width:  DEF_MAP_SIZE,
-        height: DEF_MAP_SIZE
+        width:  MAP_SIZES.default,
+        height: MAP_SIZES.default
       },
       isPlaying: false,
       playSpeed: GENERATION_SPEEDS.fast,
@@ -82,6 +86,8 @@ class AppComponent extends React.Component {
 
     this.setTableSize = (type, evt) => {
       let val = _.parseInt(evt.currentTarget.value)
+      val = val < MAP_SIZES.min ? MAP_SIZES.min : val
+      val = val > MAP_SIZES.max ? MAP_SIZES.max : val
       this.setState({
         size: update(this.state.size, {[type]: {$set: val}})
       });
@@ -157,6 +163,7 @@ class AppComponent extends React.Component {
     return (
       <Grid>
         <Setup
+          sizeLimits={MAP_SIZES}
           size={this.state.size}
           handleCreate={_.partial(this.makeStartGen, height, width)}
           handleChange={this.setTableSize}/>
@@ -166,16 +173,16 @@ class AppComponent extends React.Component {
           handlePlay={this.togglePlayMode}
           handleNext={this.makeNextGen}/>
         
-        <LifeTable cells={this.state.cells} />
-        {/*
-        <Options
-          handleSetSpeed={}
-          handleCustomGen={} />*/}
         {this.state.isFinished ? 
           <h1>The game is over!</h1>
           :
           null
         }
+        <LifeTable cells={this.state.cells} />
+        {/*
+        <Options
+          handleSetSpeed={}
+          handleCustomGen={} />*/}
       </Grid>
     );
   }

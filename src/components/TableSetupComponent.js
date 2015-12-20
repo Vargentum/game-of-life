@@ -27,8 +27,6 @@ class TableSetupComponent extends React.Component {
                     className="form-control"
                     value={this.props.size[val]}
                     onChange={_.partial(this.props.handleChange, val)}
-                    min="2"
-                    max="50"
                     placeholder={`Enter ${val} from 2 to 50`}
                     bsStyle="" />
                 </Col>
