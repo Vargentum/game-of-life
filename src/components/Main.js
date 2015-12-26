@@ -4,6 +4,7 @@ import React from 'react';
 import update from 'react-addons-update';
 
 import LifeTable from 'components/LifeTableComponent';
+import Description from 'components/DescriptionComponent';
 import Setup from 'components/TableSetupComponent';
 import Controls from 'components/TableControlsComponent';
 import Options from 'components/TableOptionsComponent';
@@ -162,6 +163,7 @@ class AppComponent extends React.Component {
 
     return (
       <Grid>
+        <Description />
         <Setup
           sizeLimits={MAP_SIZES}
           size={this.state.size}
