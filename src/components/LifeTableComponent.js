@@ -16,10 +16,17 @@ class LifeTableComponent extends React.Component {
   }
 
   r_row(row, rowIdx) {
+    let cellSize = 960 / this.props.size.width
+    let cellStyle = {
+      width: cellSize,
+      height: cellSize
+    }
+
     return (
       <tr key={rowIdx}>
         {_.map(row, (cell, cellIdx) => {
           return <td key={`${rowIdx}${cellIdx}`}
+                     style={cellStyle}
                      className={!!cell ? "is-alive" : "is-dead"} />
         })}
       </tr>

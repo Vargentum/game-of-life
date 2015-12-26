@@ -32,11 +32,10 @@ class Archiver {
   }
 }
 
-
 const MAP_SIZES = {
-  min: 10,
-  max: 50,
-  default: 50
+  min: 2,
+  max: 150,
+  default: 75
 }
 
 const GENERATION_SPEEDS = {
@@ -136,9 +135,7 @@ class AppComponent extends React.Component {
     this.togglePlayMode = (mode) => {
       this.setState({
         isPlaying: mode
-      }, () => {
-        play()
-      });
+      }, play)
     }
 
   }
@@ -163,7 +160,7 @@ class AppComponent extends React.Component {
 
     return (
       <Grid>
-        <Description />
+        <Description sizeLimits={MAP_SIZES} />
         <Setup
           sizeLimits={MAP_SIZES}
           size={this.state.size}
@@ -180,7 +177,9 @@ class AppComponent extends React.Component {
           :
           null
         }
-        <LifeTable cells={this.state.cells} />
+        <LifeTable 
+          size={this.state.size}
+          cells={this.state.cells} />
         {/*
         <Options
           handleSetSpeed={}
